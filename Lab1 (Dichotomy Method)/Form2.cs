@@ -74,7 +74,7 @@ namespace Lab1__Dichotomy_Method_
                 expression = new Expression($"f({output[0]})", function);
                 double resultValue = expression.calculate();
                 output[0] = Math.Round(output[0], precision);
-                MessageBox.Show($"x = {output[0].ToString()}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"x = {output[0]}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {

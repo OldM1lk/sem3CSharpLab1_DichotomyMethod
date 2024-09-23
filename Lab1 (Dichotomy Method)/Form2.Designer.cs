@@ -70,7 +70,7 @@
             this.functionTextBox.Name = "functionTextBox";
             this.functionTextBox.Size = new System.Drawing.Size(180, 24);
             this.functionTextBox.TabIndex = 2;
-            this.functionTextBox.Text = "x+1";
+            this.functionTextBox.Text = "x";
             // 
             // label3
             // 
