@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using org.mariuszgromada.math.mxparser;
 using OxyPlot.Series;
 using OxyPlot;
-using System.Text.RegularExpressions;
-using System.Drawing;
 
 namespace Lab1__Dichotomy_Method_
 {

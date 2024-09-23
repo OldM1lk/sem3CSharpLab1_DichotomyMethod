@@ -193,6 +193,7 @@
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(816, 243);
             this.Name = "DichotomyForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Метод Дихотомии";
             this.Resize += new System.EventHandler(this.DichotomyForm_Resize);
             this.ResumeLayout(false);
