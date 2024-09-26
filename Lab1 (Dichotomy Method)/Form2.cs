@@ -30,6 +30,20 @@ namespace Lab1__Dichotomy_Method_
         private Rectangle recTextBoxB;
         private Rectangle recTextBoxE;
 
+        private void AutoResize(Control control, Rectangle rectangle)
+        {
+            double xRatio = (double)(this.Width) / (double)(formOriginalSize.Width);
+            double yRatio = (double)(this.Height) / (double)(formOriginalSize.Height);
+            int newX = (int)(rectangle.X * xRatio);
+            int newY = (int)(rectangle.Y * yRatio);
+
+            int newWidth = (int)(rectangle.Width * xRatio);
+            int newHeight = (int)(rectangle.Height * yRatio);
+
+            control.Location = new Point(newX, newY);
+            control.Size = new Size(newWidth, newHeight);
+        }
+
         public DichotomyForm()
         {
             InitializeComponent();
@@ -51,6 +65,23 @@ namespace Lab1__Dichotomy_Method_
             recTextBoxE = new Rectangle(textBoxE.Location, textBoxE.Size);
         }
 
+        private void DichotomyForm_Resize(object sender, EventArgs e)
+        {
+            AutoResize(calculateButton, recCalculateButton);
+            AutoResize(functionTextBox, recFunctionTextBox);
+            AutoResize(graph, recGraph);
+            AutoResize(label1, recLabel1);
+            AutoResize(label2, recLabel2);
+            AutoResize(label3, recLabel3);
+            AutoResize(label4, recLabel4);
+            AutoResize(label5, recLabel5);
+            AutoResize(label6, recLabel6);
+            AutoResize(plotButton, recPlotButton);
+            AutoResize(textBoxA, recTextBoxA);
+            AutoResize(textBoxB, recTextBoxB);
+            AutoResize(textBoxE, recTextBoxE);
+        }
+
         private double leftRestriction()
         {
             return Convert.ToDouble(textBoxA.Text);
@@ -67,14 +98,14 @@ namespace Lab1__Dichotomy_Method_
             return Math.Pow(10, -precision);
         }
 
-        private void ShowResult(double[] output)
+        private void ShowResult(double result, bool error)
         {
-            if (output[1] != 1)
+            if (!error)
             {
-                expression = new Expression($"f({output[0]})", function);
+                expression = new Expression($"f({result})", function);
                 double resultValue = expression.calculate();
-                output[0] = Math.Round(output[0], precision);
-                MessageBox.Show($"x = {output[0]}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                result = Math.Round(result, precision);
+                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -82,55 +113,39 @@ namespace Lab1__Dichotomy_Method_
             }
         }
 
-        private double[] DichotomyMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        private double SolveFunction(Function function, string x)
         {
-            bool isFind = false;
-            double[] results = new double[2];
+            return new Expression($"f({x})", function).calculate();
+        }
 
-            function.checkSyntax();
+        private (double, bool) DichotomyMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        {
+            bool error = false;
+            double result = 0;
+            double current = 0;
+            double leftValue = SolveFunction(function, leftRestriction.ToString().Replace(",", "."));
 
-            expression = new Expression($"f({leftRestriction})", function);
-            expression.setArgumentValue("x", leftRestriction);
-            double leftValue = expression.calculate();
-
-            expression = new Expression($"f({rightRestriction})", function);
-            expression.setArgumentValue("x", rightRestriction);
-            double rightValue = expression.calculate();
-
-            if (leftValue * rightValue >= 0)
+            while ((rightRestriction - leftRestriction) > epsilon)
             {
-                results[1] = 1;
-            }
-            else
-            {
-                results[1] = 0;
-            }
+                current = (leftRestriction + rightRestriction) / 2;
+                double position = SolveFunction(function, current.ToString().Replace(",", "."));
 
-            while ((rightRestriction - leftRestriction) >= epsilon && !isFind)
-            {
-                double current = (leftRestriction + rightRestriction) / 2;
-
-                expression = new Expression($"f({current})", function);
-                expression.setArgumentValue("x", current);
-                expression.checkSyntax();
-
-                if (expression.calculate() == 0)
+                if (Math.Abs(position) == 0)
                 {
-                    results[0] = current;
-                    isFind = true;
+                    return(current, error);
                 }
-                else if (leftValue * expression.calculate() <= 0)
+                else if (leftValue * position < 0)
                 {
                     rightRestriction = current;
                 }
                 else
                 {
                     leftRestriction = current;
+                    leftValue = position;
                 }
             }
 
-
-            return results;
+            return (current, error);
         }
 
         private void plotButton_Click(object sender, EventArgs e)
@@ -210,40 +225,9 @@ namespace Lab1__Dichotomy_Method_
         {
             if (IsTextValid())
             {
-                double[] result = DichotomyMethod(function, leftRestriction(), rightRestriction(), epsilon());
-                ShowResult(result);
+                var output = DichotomyMethod(function, leftRestriction(), rightRestriction(), epsilon());
+                ShowResult(output.Item1, output.Item2);
             }
-        }
-
-        private void AutoResize(Control control, Rectangle rectangle)
-        {
-            double xRatio = (double)(this.Width) / (double)(formOriginalSize.Width);
-            double yRatio = (double)(this.Height) / (double)(formOriginalSize.Height);
-            int newX = (int)(rectangle.X * xRatio);
-            int newY = (int)(rectangle.Y * yRatio);
-
-            int newWidth = (int)(rectangle.Width * xRatio);
-            int newHeight = (int)(rectangle.Height * yRatio);
-
-            control.Location = new Point(newX, newY);
-            control.Size = new Size(newWidth, newHeight);
-        }
-
-        private void DichotomyForm_Resize(object sender, EventArgs e)
-        {
-            AutoResize(calculateButton, recCalculateButton);
-            AutoResize(functionTextBox, recFunctionTextBox);
-            AutoResize(graph, recGraph);
-            AutoResize(label1, recLabel1);
-            AutoResize(label2, recLabel2);
-            AutoResize(label3, recLabel3);
-            AutoResize(label4, recLabel4);
-            AutoResize(label5, recLabel5);
-            AutoResize(label6, recLabel6);
-            AutoResize(plotButton, recPlotButton);
-            AutoResize(textBoxA, recTextBoxA);
-            AutoResize(textBoxB, recTextBoxB);
-            AutoResize(textBoxE, recTextBoxE);
         }
     }
 }
