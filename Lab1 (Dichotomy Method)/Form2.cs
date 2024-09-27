@@ -82,28 +82,69 @@ namespace Lab1__Dichotomy_Method_
             AutoResize(textBoxE, recTextBoxE);
         }
 
+        private void DichotomyForm_Load(object sender, EventArgs e)
+        {
+            DichotomyForm_Resize(sender, e);
+        }
+
+        private void plotButton_Click(object sender, EventArgs e)
+        {
+            plotGraph();
+        }
+
+        private void calculateButton_Click(object sender, EventArgs e)
+        {
+            plotGraph();
+
+            if (IsTextValid())
+            {
+                var output = DichotomyMethod(function, leftRestriction(), rightRestriction(), epsilon());
+                ShowResult(output.Item1, output.Item2);
+            }
+        }
+
         private double leftRestriction()
         {
-            return Convert.ToDouble(textBoxA.Text);
+            return Convert.ToDouble(textBoxA.Text.Replace(".", ","));
         }
 
         private double rightRestriction()
         {
-            return Convert.ToDouble(textBoxB.Text);
+            return Convert.ToDouble(textBoxB.Text.Replace(".", ","));
         }
 
         private double epsilon()
         {
-            precision = Convert.ToInt16(textBoxE.Text);
-            return Math.Pow(10, -precision);
+            if (textBoxE.Text.Replace(".", ",").Contains(","))
+            {
+                MessageBox.Show("Неправильно задано значение E, оно будет заменено на значение по умолчанию", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 3;
+            }
+
+            precision = Convert.ToInt16(textBoxE.Text.Replace(".", ","));
+
+            if (precision < 0)
+            {
+                MessageBox.Show("Неправильно задано значение E, оно будет заменено на значение по умолчанию", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 3;
+            }
+            else if (precision > 13)
+            {
+                MessageBox.Show("Слишком большое значение E, оно будет заменено на значение по умолчанию", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 3;
+            }
+            else
+            {
+                return Math.Pow(10, -precision);
+            }
         }
 
         private void ShowResult(double result, bool error)
         {
             if (!error)
             {
-                expression = new Expression($"f({result})", function);
-                double resultValue = expression.calculate();
+                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
+                resultValue = Math.Round(resultValue, precision);
                 result = Math.Round(result, precision);
                 MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -121,15 +162,26 @@ namespace Lab1__Dichotomy_Method_
         private (double, bool) DichotomyMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
         {
             bool error = false;
-            double result = 0;
-            double current = 0;
+            double current = double.NaN;
             double leftValue = SolveFunction(function, leftRestriction.ToString().Replace(",", "."));
+            double rightValue = SolveFunction(function, rightRestriction.ToString().Replace(",", "."));
+
+            if (double.IsNaN(leftValue) || double.IsNaN(rightValue))
+            {
+                error = true;
+                return (current, error);
+            }
+            else if (leftValue * rightValue >= 0)
+            {
+                error = true;
+                return (current, error);
+            }
 
             while ((rightRestriction - leftRestriction) > epsilon)
             {
                 current = (leftRestriction + rightRestriction) / 2;
                 double position = SolveFunction(function, current.ToString().Replace(",", "."));
-
+                                
                 if (Math.Abs(position) == 0)
                 {
                     return(current, error);
@@ -148,7 +200,7 @@ namespace Lab1__Dichotomy_Method_
             return (current, error);
         }
 
-        private void plotButton_Click(object sender, EventArgs e)
+        private void plotGraph()
         {
             List<DataPoint> dot = new List<DataPoint>();
 
@@ -219,15 +271,6 @@ namespace Lab1__Dichotomy_Method_
             }
 
             return result;
-        }
-
-        private void calculateButton_Click(object sender, EventArgs e)
-        {
-            if (IsTextValid())
-            {
-                var output = DichotomyMethod(function, leftRestriction(), rightRestriction(), epsilon());
-                ShowResult(output.Item1, output.Item2);
-            }
         }
     }
 }
