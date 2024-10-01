@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using org.mariuszgromada.math.mxparser;
 using OxyPlot.Series;
 using OxyPlot;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Lab1__Dichotomy_Method_
 {
-    public partial class DichotomyForm : Form
+    public partial class GoldenRatioForm : Form
     {
         private Expression expression;
         private Function function;
@@ -44,11 +44,11 @@ namespace Lab1__Dichotomy_Method_
             control.Size = new Size(newWidth, newHeight);
         }
 
-        public DichotomyForm()
+        public GoldenRatioForm()
         {
             InitializeComponent();
 
-            this.Resize += DichotomyForm_Resize;
+            this.Resize += GoldenRatioForm_Resize;
             formOriginalSize = this.Size;
             recCalculateButton = new Rectangle(calculateButton.Location, calculateButton.Size);
             recFunctionTextBox = new Rectangle(functionTextBox.Location, functionTextBox.Size);
@@ -65,7 +65,7 @@ namespace Lab1__Dichotomy_Method_
             recTextBoxE = new Rectangle(textBoxE.Location, textBoxE.Size);
         }
 
-        private void DichotomyForm_Resize(object sender, EventArgs e)
+        private void GoldenRatioForm_Resize(object sender, EventArgs e)
         {
             AutoResize(calculateButton, recCalculateButton);
             AutoResize(functionTextBox, recFunctionTextBox);
@@ -82,9 +82,9 @@ namespace Lab1__Dichotomy_Method_
             AutoResize(textBoxE, recTextBoxE);
         }
 
-        private void DichotomyForm_Load(object sender, EventArgs e)
+        private void GoldenRatioForm_Load(object sender, EventArgs e)
         {
-            DichotomyForm_Resize(sender, e);
+            GoldenRatioForm_Resize(sender, e);
         }
 
         private void plotButton_Click(object sender, EventArgs e)
@@ -98,8 +98,8 @@ namespace Lab1__Dichotomy_Method_
 
             if (IsTextValid())
             {
-                var output = DichotomyMethod(function, leftRestriction(), rightRestriction(), epsilon());
-                ShowResult(output.Item1, output.Item2);
+                var output = GoldenRatioMethod(function, leftRestriction(), rightRestriction(), epsilon());
+                ShowResult(output);
             }
         }
 
@@ -137,67 +137,6 @@ namespace Lab1__Dichotomy_Method_
             {
                 return Math.Pow(10, -precision);
             }
-        }
-
-        private double SolveFunction(Function function, string x)
-        {
-            return new Expression($"f({x})", function).calculate();
-        }
-
-        private void ShowResult(double result, bool error)
-        {
-            if (!error)
-            {
-                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
-                resultValue = Math.Round(resultValue, precision);
-                result = Math.Round(result, precision);
-                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("В заданном интревале отсутствует корень", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private (double, bool) DichotomyMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
-        {
-            bool error = false;
-            double current = double.NaN;
-            double leftValue = SolveFunction(function, leftRestriction.ToString().Replace(",", "."));
-            double rightValue = SolveFunction(function, rightRestriction.ToString().Replace(",", "."));
-
-            if (double.IsNaN(leftValue) || double.IsNaN(rightValue))
-            {
-                error = true;
-                return (current, error);
-            }
-            else if (leftValue * rightValue >= 0)
-            {
-                error = true;
-                return (current, error);
-            }
-
-            while ((rightRestriction - leftRestriction) > epsilon)
-            {
-                current = (leftRestriction + rightRestriction) / 2;
-                double position = SolveFunction(function, current.ToString().Replace(",", "."));
-                                
-                if (Math.Abs(position) == 0)
-                {
-                    return(current, error);
-                }
-                else if (leftValue * position < 0)
-                {
-                    rightRestriction = current;
-                }
-                else
-                {
-                    leftRestriction = current;
-                    leftValue = position;
-                }
-            }
-
-            return (current, error);
         }
 
         private void plotGraph()
@@ -249,6 +188,19 @@ namespace Lab1__Dichotomy_Method_
             this.graph.Model = plotModel;
         }
 
+        private double SolveFunction(Function function, string x)
+        {
+            return new Expression($"f({x})", function).calculate();
+        }
+
+        private void ShowResult(double result)
+        {
+            double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
+            resultValue = Math.Round(resultValue, precision);
+            result = Math.Round(result, precision);
+            MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private bool IsTextValid()
         {
             Regex regex = new Regex(@"^[\d,.-]+$");
@@ -269,6 +221,47 @@ namespace Lab1__Dichotomy_Method_
                 result = false;
                 MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            return result;
+        }
+
+        public double GoldenRatioMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        {
+            double result = double.NaN;
+
+            double leftValue = SolveFunction(function, leftRestriction.ToString().Replace(",", "."));
+            double rightValue = SolveFunction(function, rightRestriction.ToString().Replace(",", "."));
+
+            double d = (Math.Sqrt(5) - 1) / 2;
+
+            double xFirst = rightRestriction - d * (rightRestriction - leftRestriction);
+            double xSecond = leftRestriction + d * (rightRestriction - leftRestriction);
+
+            double firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
+            double secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
+
+
+            while (Math.Abs(rightRestriction - leftRestriction) > epsilon)
+            {
+                if (firstResult < secondResult)
+                {
+                    rightRestriction = xSecond;
+                    xSecond = xFirst;
+                    xFirst = rightRestriction - d * (rightRestriction - leftRestriction);
+                    firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
+                    secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
+                }
+                else
+                {
+                    leftRestriction = xFirst;
+                    xFirst = xSecond;
+                    xSecond = leftRestriction + d * (rightRestriction - leftRestriction);
+                    firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
+                    secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
+                }
+            }
+
+            result = (leftRestriction + rightRestriction) / 2;
 
             return result;
         }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using org.mariuszgromada.math.mxparser;
+using OxyPlot.Series;
+using OxyPlot;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Lab1__Dichotomy_Method_

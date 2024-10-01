@@ -15,7 +15,7 @@ namespace Lab1__Dichotomy_Method_
         {
             //Высота кнопок
             dichotomyMethodButoon.Height = buttonsPanel.Height / 4;
-            button2.Height = buttonsPanel.Height / 4;
+            goldenRatioMethodbutton.Height = buttonsPanel.Height / 4;
             button3.Height = buttonsPanel.Height / 4;
             button4.Height = buttonsPanel.Height / 4;
             button5.Height = buttonsPanel.Height / 4;
@@ -25,7 +25,7 @@ namespace Lab1__Dichotomy_Method_
 
             //Ширина кнопок
             dichotomyMethodButoon.Width = buttonsPanel.Width / 2;
-            button2.Width = buttonsPanel.Width / 2;
+            goldenRatioMethodbutton.Width = buttonsPanel.Width / 2;
             button3.Width = buttonsPanel.Width / 2;
             button4.Width = buttonsPanel.Width / 2;
             button5.Width = buttonsPanel.Width / 2;
@@ -35,7 +35,7 @@ namespace Lab1__Dichotomy_Method_
 
             //Верхняя граница
             dichotomyMethodButoon.Top = 0;
-            button2.Top = 0;
+            goldenRatioMethodbutton.Top = 0;
             button3.Top = buttonsPanel.Height / 4;
             button4.Top = buttonsPanel.Height / 4;
             button5.Top = buttonsPanel.Height * 2 / 4;
@@ -48,7 +48,7 @@ namespace Lab1__Dichotomy_Method_
             button3.Left = 0;
             button5.Left = 0;
             button7.Left = 0;
-            button2.Left = buttonsPanel.Width / 2;
+            goldenRatioMethodbutton.Left = buttonsPanel.Width / 2;
             button4.Left = buttonsPanel.Width / 2;
             button6.Left = buttonsPanel.Width / 2;
             button8.Left = buttonsPanel.Width / 2;
@@ -67,7 +67,8 @@ namespace Lab1__Dichotomy_Method_
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Скоро все будет!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            GoldenRatioForm goldenRatioForm = new GoldenRatioForm();
+            goldenRatioForm.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)

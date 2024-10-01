@@ -35,7 +35,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.goldenRatioMethodbutton = new System.Windows.Forms.Button();
             this.dichotomyMethodButoon = new System.Windows.Forms.Button();
             this.buttonsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +48,7 @@
             this.buttonsPanel.Controls.Add(this.button5);
             this.buttonsPanel.Controls.Add(this.button4);
             this.buttonsPanel.Controls.Add(this.button3);
-            this.buttonsPanel.Controls.Add(this.button2);
+            this.buttonsPanel.Controls.Add(this.goldenRatioMethodbutton);
             this.buttonsPanel.Controls.Add(this.dichotomyMethodButoon);
             this.buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonsPanel.Location = new System.Drawing.Point(0, 0);
@@ -123,16 +123,16 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button2
+            // goldenRatioMethodbutton
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(118, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 100);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.goldenRatioMethodbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.goldenRatioMethodbutton.Location = new System.Drawing.Point(118, 12);
+            this.goldenRatioMethodbutton.Name = "goldenRatioMethodbutton";
+            this.goldenRatioMethodbutton.Size = new System.Drawing.Size(100, 100);
+            this.goldenRatioMethodbutton.TabIndex = 1;
+            this.goldenRatioMethodbutton.Text = "2. Метод Золотого Сечения";
+            this.goldenRatioMethodbutton.UseVisualStyleBackColor = true;
+            this.goldenRatioMethodbutton.Click += new System.EventHandler(this.button2_Click);
             // 
             // dichotomyMethodButoon
             // 
@@ -170,7 +170,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button goldenRatioMethodbutton;
         private System.Windows.Forms.Button dichotomyMethodButoon;
     }
 }
