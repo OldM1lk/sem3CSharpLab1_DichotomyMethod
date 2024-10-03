@@ -41,6 +41,10 @@
             this.functionTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.minMaxGroup = new System.Windows.Forms.GroupBox();
+            this.minRadioButton = new System.Windows.Forms.RadioButton();
+            this.maxRadioButton = new System.Windows.Forms.RadioButton();
+            this.minMaxGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // calculateButton
@@ -173,11 +177,49 @@
             this.label1.TabIndex = 13;
             this.label1.Text = "Введите функцию:";
             // 
+            // minMaxGroup
+            // 
+            this.minMaxGroup.Controls.Add(this.maxRadioButton);
+            this.minMaxGroup.Controls.Add(this.minRadioButton);
+            this.minMaxGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.minMaxGroup.Location = new System.Drawing.Point(17, 262);
+            this.minMaxGroup.Name = "minMaxGroup";
+            this.minMaxGroup.Size = new System.Drawing.Size(200, 86);
+            this.minMaxGroup.TabIndex = 27;
+            this.minMaxGroup.TabStop = false;
+            this.minMaxGroup.Text = "Min / Max";
+            // 
+            // minRadioButton
+            // 
+            this.minRadioButton.AutoSize = true;
+            this.minRadioButton.Checked = true;
+            this.minRadioButton.Location = new System.Drawing.Point(6, 28);
+            this.minRadioButton.Name = "minRadioButton";
+            this.minRadioButton.Size = new System.Drawing.Size(59, 28);
+            this.minRadioButton.TabIndex = 0;
+            this.minRadioButton.TabStop = true;
+            this.minRadioButton.Text = "Min";
+            this.minRadioButton.UseVisualStyleBackColor = true;
+            this.minRadioButton.CheckedChanged += new System.EventHandler(this.minRadioButton_CheckedChanged);
+            // 
+            // maxRadioButton
+            // 
+            this.maxRadioButton.AutoSize = true;
+            this.maxRadioButton.Location = new System.Drawing.Point(6, 57);
+            this.maxRadioButton.Name = "maxRadioButton";
+            this.maxRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.maxRadioButton.Size = new System.Drawing.Size(64, 28);
+            this.maxRadioButton.TabIndex = 1;
+            this.maxRadioButton.Text = "Max";
+            this.maxRadioButton.UseVisualStyleBackColor = true;
+            this.maxRadioButton.CheckedChanged += new System.EventHandler(this.maxRadioButton_CheckedChanged);
+            // 
             // GoldenRatioForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 359);
+            this.Controls.Add(this.minMaxGroup);
             this.Controls.Add(this.calculateButton);
             this.Controls.Add(this.graph);
             this.Controls.Add(this.textBoxE);
@@ -196,6 +238,8 @@
             this.Text = "Метод Золотого сечения";
             this.Load += new System.EventHandler(this.GoldenRatioForm_Load);
             this.Resize += new System.EventHandler(this.GoldenRatioForm_Resize);
+            this.minMaxGroup.ResumeLayout(false);
+            this.minMaxGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,5 +260,8 @@
         private System.Windows.Forms.TextBox functionTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox minMaxGroup;
+        private System.Windows.Forms.RadioButton maxRadioButton;
+        private System.Windows.Forms.RadioButton minRadioButton;
     }
 }

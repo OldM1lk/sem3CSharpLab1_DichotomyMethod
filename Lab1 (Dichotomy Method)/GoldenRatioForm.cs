@@ -6,6 +6,7 @@ using OxyPlot.Series;
 using OxyPlot;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Lab1__Dichotomy_Method_
 {
@@ -29,6 +30,7 @@ namespace Lab1__Dichotomy_Method_
         private Rectangle recTextBoxA;
         private Rectangle recTextBoxB;
         private Rectangle recTextBoxE;
+        private Rectangle recMinMaxGroup;
 
         private void AutoResize(Control control, Rectangle rectangle)
         {
@@ -63,6 +65,7 @@ namespace Lab1__Dichotomy_Method_
             recTextBoxA = new Rectangle(textBoxA.Location, textBoxA.Size);
             recTextBoxB = new Rectangle(textBoxB.Location, textBoxB.Size);
             recTextBoxE = new Rectangle(textBoxE.Location, textBoxE.Size);
+            recMinMaxGroup = new Rectangle(minMaxGroup.Location, minMaxGroup.Size);
         }
 
         private void GoldenRatioForm_Resize(object sender, EventArgs e)
@@ -80,6 +83,7 @@ namespace Lab1__Dichotomy_Method_
             AutoResize(textBoxA, recTextBoxA);
             AutoResize(textBoxB, recTextBoxB);
             AutoResize(textBoxE, recTextBoxE);
+            AutoResize(minMaxGroup, recMinMaxGroup);
         }
 
         private void GoldenRatioForm_Load(object sender, EventArgs e)
@@ -264,6 +268,57 @@ namespace Lab1__Dichotomy_Method_
             result = (leftRestriction + rightRestriction) / 2;
 
             return result;
+        }
+
+        private void minRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton minRaadioButton = (RadioButton)sender;
+
+            if (minRaadioButton.Checked)
+            {
+                switch (functionTextBox.TextLength)
+                {
+                    case 0:
+                        MessageBox.Show("Неправильно задана функция", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 2:
+                        if (functionTextBox.Text.StartsWith("-"))
+                        {
+                            functionTextBox.Text = functionTextBox.Text.Substring(1, functionTextBox.TextLength - 1);
+                        }
+                        break;
+                    default:
+                        if (functionTextBox.Text.Substring(0, 2) == "-(" && functionTextBox.Text.EndsWith(")"))
+                        {
+                            functionTextBox.Text = functionTextBox.Text.Substring(2, functionTextBox.TextLength - 3);
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void maxRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton maxRaadioButton = (RadioButton)sender;
+
+            if (maxRaadioButton.Checked)
+            {
+                switch (functionTextBox.TextLength)
+                {
+                    case 0:
+                        MessageBox.Show("Неправильно задана функция", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 1:
+                        functionTextBox.Text = "-" + functionTextBox.Text;
+                        break;
+                    default:
+                        if (!(functionTextBox.Text.Substring(0, 2) == "-(" && functionTextBox.Text.EndsWith(")")))
+                        {
+                            functionTextBox.Text = "-(" + functionTextBox.Text + ")";
+                        }
+                        break;
+                }                
+            }
         }
     }
 }
